@@ -10,7 +10,7 @@ Normalize data across leveldbs (or sublevels)
 var level = require('level');
 var sub = require('level-sublevel');
 var db = sub(level('/tmp/example-db'));
-var hydrator = require('sublevel-hydrator');
+var hydrator = require('level-hydrator');
 
 // init dbs
 var Author = db.sublevel('author');
