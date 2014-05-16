@@ -1,0 +1,42 @@
+{
+  "name": "level-hydrator",
+  "version": "0.0.1",
+  "description": "Normalize data across leveldbs (or sublevels)",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -b"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/will123195/level-hydrator.git"
+  },
+  "keywords": [
+    "leveldb",
+    "sublevel",
+    "hydrate",
+    "hydration",
+    "orm",
+    "foreign",
+    "key",
+    "relationship"
+  ],
+  "author": "will123195",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/will123195/level-hydrator/issues"
+  },
+  "homepage": "https://github.com/will123195/level-hydrator",
+  "devDependencies": {
+    "rimraf": "~2.2.8",
+    "chai": "^1.9.1",
+    "mocha": "~1.18.2",
+    "should": "~3.3.1",
+    "level": "~0.18.0",
+    "level-sublevel": "~5.2.0"
+  },
+  "dependencies": {
+    "lodash": "~2.4.1",
+    "async": "~0.9.0",
+    "uuid": "~1.4.1"
+  }
+}
