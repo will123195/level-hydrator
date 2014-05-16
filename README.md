@@ -1,6 +1,6 @@
-# sublevel-hydrator
+# level-hydrator
 
-Normalized data across sublevels
+Normalized data across leveldbs (or sublevels)
 
 ## Example
 
