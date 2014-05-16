@@ -1,6 +1,8 @@
 # level-hydrator
 
-Normalized data across leveldbs (or sublevels)
+Normalize data across leveldbs (or sublevels)
+
+[![build status](https://api.travis-ci.org/will123195/level-hydrator.svg)](http://travis-ci.org/will123195/level-hydrator)
 
 ## Example
 
