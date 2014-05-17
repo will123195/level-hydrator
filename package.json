@@ -18,7 +18,9 @@
     "orm",
     "foreign",
     "key",
-    "relationship"
+    "normalize",
+    "relationship",
+    "relational"
   ],
   "author": "will123195",
   "license": "MIT",
