@@ -36,7 +36,7 @@ describe('level-hydrator', function() {
       author: {
         books: {
           db: Book,
-          uuidField: 'bookId'
+          uuid: 'bookId'
         }
       }
     });
@@ -78,7 +78,7 @@ describe('level-hydrator', function() {
       author: {
         books: {
           db: Book,
-          uuidField: 'bookId'
+          uuid: 'bookId'
         }
       }
     });

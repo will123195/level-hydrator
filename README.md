@@ -21,7 +21,7 @@ var h = hydrator({
   author: {
     books: {
       db: Book,
-      uuidField: 'bookId'
+      uuid: 'bookId'
     }
   }
 });

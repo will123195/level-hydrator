@@ -27,11 +27,11 @@ describe('object-hydrator', function() {
     var userOpts = {
       favoriteAuthor: {
         db: Author,
-        uuidField: 'authorId'
+        uuid: 'authorId'
       },
       favoriteBooks: {
         db: Book,
-        uuidField: 'bookId'
+        uuid: 'bookId'
       }
     };
     var h = objectHydrator(userOpts);

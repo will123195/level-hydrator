@@ -4,7 +4,7 @@ var propertyHydrator = require('./property-hydrator');
 
 /**
  * Creates a ObjectHydrator instance that will hydrate/dehydrate all applicable properties.
- * @param  {Object} opts { name: { db: , uuidField:  } }
+ * @param  {Object} opts { name: { db: , uuid:  } }
  */
 var ObjectHydrator = module.exports = function ObjectHydrator(opts) {
 
@@ -17,7 +17,7 @@ var ObjectHydrator = module.exports = function ObjectHydrator(opts) {
   this.hydrators = {};
   Object.keys(opts).forEach(function(name) {
     var db = opts[name].db;
-    var uuidField = opts[name].uuidField;
+    var uuidField = opts[name].uuid;
     h.hydrators[name] = propertyHydrator(db, uuidField);
   });
 
