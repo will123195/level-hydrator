@@ -32,7 +32,7 @@ var h = hydrator({
 });
 // now you can do: h.author.hydrate(obj, cb)
 
-// a new object with nested objects
+// a new author data object with nested objects (1-to-1 and 1-to-m)
 var author = {
   name: 'Jack Kerouac',
   books: [
