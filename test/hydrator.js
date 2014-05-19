@@ -33,12 +33,10 @@ describe('level-hydrator', function() {
     var Book = db1.sublevel('book');
 
     var h = hydrator({
-      types: {
-        author: {
-          books: {
-            db: Book,
-            uuidField: 'bookId'
-          }
+      author: {
+        books: {
+          db: Book,
+          uuidField: 'bookId'
         }
       }
     });
@@ -77,12 +75,10 @@ describe('level-hydrator', function() {
     var Book = db2;
 
     var h = hydrator({
-      types: {
-        author: {
-          books: {
-            db: Book,
-            uuidField: 'bookId'
-          }
+      author: {
+        books: {
+          db: Book,
+          uuidField: 'bookId'
         }
       }
     });
