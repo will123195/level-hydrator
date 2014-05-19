@@ -18,17 +18,12 @@ var Book = db.sublevel('book');
 
 // configure hydrator
 var h = hydrator({
-  dbs: {
+  types: {
     author: {
-      db: Author,
-      uuid: 'authorId',
-      properties: {
-        books: Book,
+      books: {
+        db: Book,
+        uuidField: 'bookId'
       }
-    },
-    book: {
-      db: Book,
-      uuid: 'bookId'
     }
   }
 });

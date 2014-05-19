@@ -5,39 +5,40 @@ var path = require('path');
 var hydrator = require('..');
 var rimraf = require('rimraf');
 
-describe('sublevel-hydrator', function() {
-  var db, dbPath = path.join(__dirname, '..', 'data', 'test-db');
+describe('level-hydrator', function() {
 
-  db = sub(level(dbPath, { valueEncoding: 'json' }));
+  var db1, db2;
+  var dbPath = path.join(__dirname, '..', 'data', 'test-db');
+  var uuidField = 'uuid';
 
-  // beforeEach(function(done) {
-  //   rimraf.sync(dbPath);
-  //   db = sub(level(dbPath, { valueEncoding: 'json' }, done));
-  // });
+  beforeEach(function(done) {
+    //rimraf.sync(dbPath);
+    var dbPath = [
+      path.join(__dirname, '..', 'data', 'test-db1'),
+      path.join(__dirname, '..', 'data', 'test-db2')
+    ];
 
-  // afterEach(function(done) {
-  //   db.close(done);
-  // });
+    db1 = sub(level(dbPath[0], { valueEncoding: 'json' }));
+    db2 = level(dbPath[1], { valueEncoding: 'json' }, done);
+  });
+
+  afterEach(function(done) {
+    db1.close();
+    db2.close(done);
+  });
 
 
+  it('should dehydrate and hydrate an object using sublevels', function(done) {
 
-  it('should dehydrate and hydrate an object', function(done) {
-
-    var Author = db.sublevel('author');
-    var Book = db.sublevel('book');
+    var Book = db1.sublevel('book');
 
     var h = hydrator({
-      dbs: {
+      types: {
         author: {
-          db: Author,
-          uuid: 'authorId',
-          properties: {
-            books: Book,
+          books: {
+            db: Book,
+            uuidField: 'bookId'
           }
-        },
-        book: {
-          db: Book,
-          uuid: 'bookId'
         }
       }
     });
@@ -53,24 +54,61 @@ describe('sublevel-hydrator', function() {
     };
 
     h.author.dehydrate(author, function(err, author) {
-
-      console.log('author1:', author);
-
+      //console.log('author dehydrated:', author);
       var newUUID = author.books[0];
       newUUID.should.be.a.String;
-
       h.author.hydrate(author, function(err, author) {
-
-        console.log('author2:', author);
-
+        //console.log('author rehydrated:', author);
         author.books[0].bookId.should.equal(newUUID);
-
+        // dehydrate again with an existing uuid to ensure it stays the same
+        h.author.dehydrate(author, function(err, author) {
+          //console.log('author redehydrated:', author);
+          author.books[0].should.eql(newUUID);
+          done();
+        });
       });
+    });
+  });
 
+
+
+  it('should dehydrate and hydrate an object using separate leveldbs', function(done) {
+
+    var Book = db2;
+
+    var h = hydrator({
+      types: {
+        author: {
+          books: {
+            db: Book,
+            uuidField: 'bookId'
+          }
+        }
+      }
     });
 
-    done();
+    var author = {
+      name: 'Jack Kerouac',
+      books: [
+        {
+          title: 'On the Road',
+          year: 1957
+        }
+      ]
+    };
+
+    h.author.dehydrate(author, function(err, author) {
+      //console.log('author dehydrated:', author);
+      var newUUID = author.books[0];
+      newUUID.should.be.a.String;
+      h.author.hydrate(author, function(err, author) {
+        //console.log('author rehydrated:', author);
+        author.books[0].bookId.should.equal(newUUID);
+        done();
+      });
+    });
   });
+
 
 
 
