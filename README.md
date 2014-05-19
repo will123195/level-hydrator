@@ -17,9 +17,9 @@ var Author = db.sublevel('author');
 var Book = db.sublevel('book');
 var Image = db.sublevel('image');
 
-// configure hydrator
+// configure a hydrator called `author` for two hydratable properties: `books` and `photo`
 var h = hydrator({
-  author: { // --> h.author.dehydrate(value, cb), h.author.hydrate(value, cb)
+  author: {
     books: {
       db: Book,
       uuid: 'bookId'
@@ -30,6 +30,7 @@ var h = hydrator({
     }
   }
 });
+// now you can do: h.author.hydrate(obj, cb)
 
 // a new object with nested objects
 var author = {
