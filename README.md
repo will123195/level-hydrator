@@ -15,13 +15,18 @@ var hydrator = require('level-hydrator');
 // init dbs
 var Author = db.sublevel('author');
 var Book = db.sublevel('book');
+var Image = db.sublevel('image');
 
 // configure hydrator
 var h = hydrator({
-  author: {
+  author: { // --> h.author.dehydrate(value, cb), h.author.hydrate(value, cb)
     books: {
       db: Book,
       uuid: 'bookId'
+    },
+    photo: {
+      db: Image,
+      uuid: 'imageId'
     }
   }
 });
@@ -34,7 +39,12 @@ var author = {
       title: 'On the Road',
       year: 1957
     }
-  ]
+  ],
+  photo: {
+    url: 'http://bit.ly/1nf9eT9',
+    width: 220,
+    height: 220
+  }
 };
 
 // example of dehydrating, then hydrating it back
@@ -43,7 +53,8 @@ h.author.dehydrate(author, function(err, author) {
     author:
     {
       name: 'Jack Kerouac',
-      books: [ 'b9ac7e0a-61d6-461c-8372-02b28b8a0cc0' ]
+      books: [ 'b9ac7e0a-61d6-461c-8372-02b28b8a0cc0' ],
+      photo: '1343bcc0-df9e-11e3-8b68-0800200c9a66'
     }
   */
 
@@ -58,7 +69,13 @@ h.author.dehydrate(author, function(err, author) {
             title: 'On the Road',
             year: 1957
           }
-        ]
+        ],
+        photo: {
+          imageId: '1343bcc0-df9e-11e3-8b68-0800200c9a66'
+          url: 'http://bit.ly/1nf9eT9',
+          width: 220,
+          height: 220
+        }
       }
     */
   });

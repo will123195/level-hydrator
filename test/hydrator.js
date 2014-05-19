@@ -70,6 +70,86 @@ describe('level-hydrator', function() {
 
 
 
+  it('should dehydrate idempotently', function(done) {
+
+    var Book = db1.sublevel('book');
+
+    var h = hydrator({
+      author: {
+        books: {
+          db: Book,
+          uuid: 'bookId'
+        }
+      }
+    });
+
+    var author = {
+      name: 'Jack Kerouac',
+      books: [
+        {
+          title: 'On the Road',
+          year: 1957
+        }
+      ]
+    };
+
+    h.author.dehydrate(author, function(err, author) {
+      //console.log('author dehydrated:', author);
+      var newUUID = author.books[0];
+      newUUID.should.be.a.String;
+      // dehydrate again with an existing uuid to ensure it stays the same
+      h.author.dehydrate(author, function(err, author) {
+        //console.log('author redehydrated:', author);
+        author.books[0].should.eql(newUUID);
+        done();
+      });
+    });
+  });
+
+
+  it('should hydrate idempotently', function(done) {
+
+    var Book = db1.sublevel('book');
+
+    var h = hydrator({
+      author: {
+        books: {
+          db: Book,
+          uuid: 'bookId'
+        }
+      }
+    });
+
+    var author = {
+      name: 'Jack Kerouac',
+      books: [
+        {
+          title: 'On the Road',
+          year: 1957
+        }
+      ]
+    };
+
+    h.author.dehydrate(author, function(err, author) {
+      //console.log('author dehydrated:', author);
+      var newUUID = author.books[0];
+      newUUID.should.be.a.String;
+      h.author.hydrate(author, function(err, author) {
+        //console.log('author hydrated:', author);
+        author.books[0].bookId.should.equal(newUUID);
+        // hydrate again and it should not make a difference
+        h.author.hydrate(author, function(err, author) {
+          //console.log('author rehydrated:', author);
+          author.books[0].bookId.should.equal(newUUID);
+          author.books[0].year.should.equal(1957);
+          done();
+        });
+      });
+    });
+  });
+
+
+
   it('should dehydrate and hydrate an object using separate leveldbs', function(done) {
 
     var Book = db2;
