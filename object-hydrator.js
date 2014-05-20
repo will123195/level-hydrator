@@ -47,7 +47,11 @@ ObjectHydrator.prototype.process = function(action, data, cb) {
   var h = this;
   async.each(Object.keys(this.hydrators), function(name, done) {
     // use the preinitialized propertyHydrator to hydrate/dehydrate this property
-    h.hydrators[name][action](data[name], function(err, value) {
+    var value = data[name];
+    if (!value) {
+      return done();
+    }
+    h.hydrators[name][action](value, function(err, value) {
       if (err) return done(err);
       data[name] = value;
       done();
