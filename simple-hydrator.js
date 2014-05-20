@@ -58,10 +58,18 @@ SimpleHydrator.prototype.dehydrate = function(value, cb) {
     newValue[this.uuidField] = uuid;
     newValue = _.merge(newValue, value);
 
-    this.db.put(uuid, newValue, function(err) {
-      if (err) return cb(err);
-      return cb(null, uuid);
+    this.save(uuid, newValue, function(err, uuid) {
+      cb(err, uuid);
     });
   }
-}
+};
+
+
+SimpleHydrator.prototype.save = function(uuid, value, cb) {
+  this.db.put(uuid, value, function(err) {
+    if (err) return cb(err);
+    return cb(null, uuid);
+  });
+};
+
 

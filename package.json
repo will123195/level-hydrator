@@ -1,6 +1,6 @@
 {
   "name": "level-hydrator",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Normalize data across leveldbs (or sublevels)",
   "main": "index.js",
   "scripts": {

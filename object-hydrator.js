@@ -14,11 +14,11 @@ var ObjectHydrator = module.exports = function ObjectHydrator(opts) {
 
   // initialize the propertyHydrators for each of the properties
   var h = this;
-  this.hydrators = {};
+  this.properties = {};
   Object.keys(opts).forEach(function(name) {
     var db = opts[name].db;
     var uuidField = opts[name].uuid;
-    h.hydrators[name] = propertyHydrator(db, uuidField);
+    h.properties[name] = propertyHydrator(db, uuidField);
   });
 
 }
@@ -39,19 +39,19 @@ ObjectHydrator.prototype.process = function(action, data, cb) {
     // clone so we don't dehydrate the source object being referenced
     data = _.cloneDeep(data);
   }
-  if (Object.keys(this.hydrators).length === 0) {
+  if (Object.keys(this.properties).length === 0) {
     // no properties that are hydratable
     return cb(null, data);
   }
   // for each hydratable property
   var h = this;
-  async.each(Object.keys(this.hydrators), function(name, done) {
+  async.each(Object.keys(this.properties), function(name, done) {
     // use the preinitialized propertyHydrator to hydrate/dehydrate this property
     var value = data[name];
     if (!value) {
       return done();
     }
-    h.hydrators[name][action](value, function(err, value) {
+    h.properties[name][action](value, function(err, value) {
       if (err) return done(err);
       data[name] = value;
       done();
